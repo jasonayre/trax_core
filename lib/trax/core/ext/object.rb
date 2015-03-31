@@ -1,5 +1,5 @@
 require "active_support/core_ext/object/try"
-require 'pry'
+
 class Object
   # Defines a Configuration Class within a target module namespace, or nested class
   # i.e. configuration_for(::Ecommerce::Cart) will define
