@@ -28,5 +28,6 @@ module Trax
     autoload :InheritanceHooks
     autoload :Mixin
     autoload :Mixable
+    autoload :TrackableProcEvaluation
   end
 end
