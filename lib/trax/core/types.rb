@@ -3,6 +3,8 @@ module Trax
     module Types
       extend ::ActiveSupport::Autoload
 
+      autoload :AnonymousStruct
+      autoload :AnonymousEnum
       autoload :Array
       autoload :ArrayOf
       autoload :Behaviors
