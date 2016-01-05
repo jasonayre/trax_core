@@ -17,6 +17,14 @@ module Trax
         def self.to_sym
           :value
         end
+
+        def self.to_schema
+          ::Trax::Core::Definition.new(
+            :name => self.name.demodulize.underscore,
+            :source => self.name,
+            :type => self.type
+          )
+        end
       end
     end
   end

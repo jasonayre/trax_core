@@ -22,6 +22,7 @@ module Trax
           :float    => 0.0,
           :integer  => nil,
           :json     => {},
+          :set      => [],
           :string   => "",
           :struct   => {},
           :time     => nil
@@ -70,6 +71,10 @@ module Trax
           define_attribute_class_for_type(:json, name, *args, **options, &block)
         end
 
+        def self.set_property(name, *args, **options, &block)
+          define_attribute_class_for_type(:set, name, *args, :coerce => true, **options, &block)
+        end
+
         def self.string_property(name, *args, **options, &block)
           define_attribute_class_for_type(:string, name, *args, :coerce => ::String, **options, &block)
         end
@@ -79,7 +84,20 @@ module Trax
         end
 
         def self.time_property(name, *args, **options, &block)
-          define_attribute_class_for_type(:time, name, *args, :coerce => ->(value){ ::Time.parse(value) if value }, **options, &block)
+          define_attribute_class_for_type(:time, name, *args, :coerce => ->(value){
+            result = if value
+              case value
+              when ::String
+                ::Time.parse(value)
+              when ::Time
+                value
+              when ::Proc
+                value.call
+              end
+            end
+
+            result
+          }, **options, &block)
         end
 
         def self.to_schema
@@ -110,6 +128,7 @@ module Trax
           alias :float :float_property
           alias :integer :integer_property
           alias :json :json_property
+          alias :set :set_property
           alias :string :string_property
           alias :struct :struct_property
           alias :time :time_property
@@ -136,6 +155,7 @@ module Trax
           end
 
           options[:default] = options.key?(:default) ? options[:default] : DEFAULT_VALUES_FOR_PROPERTY_TYPES[type_name]
+
           property(property_name.to_sym, *args, **options)
 
           if coerce.is_a?(::Proc)

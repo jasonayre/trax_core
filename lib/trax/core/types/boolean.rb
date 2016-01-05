@@ -5,6 +5,11 @@ module Trax
         def self.type
           :boolean
         end
+
+        def self.to_schema
+          result = super
+          result[:values] = [true, false]
+        end
       end
     end
   end

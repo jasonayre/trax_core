@@ -16,6 +16,13 @@ describe ::Trax::Core::Types::Struct do
         end
 
         time :created_at
+        time :last_updated_at, :default => lambda{|record| ::Time.mktime(1980,1,1) }
+
+        float :latitude, :default => 1.0
+        float :longitude, :default => 5.0
+
+        set :place_ids
+        set :lat_long_with_sum, :default => lambda{|record| [ record.latitude, record.longitude, (record.latitude + record.longitude) ] }
       end
 
       struct :Locale do
@@ -85,6 +92,27 @@ describe ::Trax::Core::Types::Struct do
     end
   end
 
+  context "with set property" do
+    let(:definition) { "::MyFakeStructNamespace::Location".constantize.new(:place_ids => [1, 2]) }
+
+    subject { definition }
+    it { expect(definition.place_ids.first).to eq(1) }
+
+    context "behaves like a set" do
+      it {
+        subject.place_ids << 1
+        subject.place_ids << 1
+        expect(subject.place_ids.length).to eq 2
+      }
+    end
+
+    context "default value" do
+      it {
+        expect(subject.lat_long_with_sum).to eq [1.0, 5.0, 6.0].to_set
+      }
+    end
+  end
+
   context "with boolean property" do
     let(:definition) { "::MyFakeStructNamespace::Locale".constantize }
     subject { definition.new(:is_whatever => false) }
@@ -107,10 +135,15 @@ describe ::Trax::Core::Types::Struct do
     subject { definition.new(:created_at => fake_time1) }
     it { expect(subject.created_at).to eq fake_time1 }
 
-    context do
+    context "parsing timestamps" do
       let(:db_timestamp) { "2015-12-05 15:34:57.701289" }
       let(:test_subject) { definition.new(:created_at => db_timestamp) }
       it { test_subject.created_at.should be_a(::Time) }
+    end
+
+    context "default value" do
+      subject{ definition.new }
+      it { expect(subject.last_updated_at).to eq ::Time.mktime(1980,1,1) }
     end
   end
 end
