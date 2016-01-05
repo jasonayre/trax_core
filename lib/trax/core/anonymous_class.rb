@@ -1,7 +1,7 @@
 module Trax
   module Core
     class AnonymousClass
-      def self.new( _parent_klass=Object, **options, &block)
+      def self.new(_parent_klass=::Object, **options, &block)
         klass = ::Class.new(_parent_klass)
 
         options.each_pair do |k,v|
