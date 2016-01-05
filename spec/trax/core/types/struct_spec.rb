@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe ::Trax::Core::Types::Struct do
   before(:all) do
-
     module MyFakeStructNamespace
       extend ::Trax::Core::Definitions
 

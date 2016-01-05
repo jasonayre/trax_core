@@ -10,9 +10,9 @@ describe ::Trax::Core::Types::AnonymousEnum do
   }
   let(:category_enum_klass) {
     ::Trax::Core::AnonymousClass.new(described_class) do
-      define :default, 1
-      define :clothing, 2
-      define :shoes, 3
+      define :default,     1
+      define :clothing,    2
+      define :shoes,       3
       define :accessories, 4
     end
   }
