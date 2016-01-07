@@ -156,8 +156,8 @@ module Trax
           super(subklass)
 
           if self.instance_variable_defined?(:@_values_hash)
-            subklass.instance_variable_set(:@_values_hash, ::Hash.new.merge(@_values_hash.deep_dup))
-            subklass.instance_variable_set(:@_names_hash, ::Hash.new.merge(@_names_hash.deep_dup))
+            subklass.instance_variable_set(:@_values_hash, ::Hash.new.merge(@_values_hash))
+            subklass.instance_variable_set(:@_names_hash, ::Hash.new.merge(@_names_hash))
           else
             subklass.instance_variable_set(:@_values_hash, ::Hash.new)
             subklass.instance_variable_set(:@_names_hash, ::Hash.new)
