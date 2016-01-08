@@ -1,6 +1,9 @@
 module Trax
   module Core
     class AnonymousClass
+      class_attribute :registry
+      self.registry = {}.with_indifferent_access
+
       def self.new(_parent_klass=::Object, **options, &block)
         klass = ::Class.new(_parent_klass)
 
@@ -10,6 +13,8 @@ module Trax
         end unless options.blank?
 
         klass.class_eval(&block) if block_given?
+
+        registry[klass.registry_key] = klass if klass.respond_to?(:registry_key)
 
         klass
       end
