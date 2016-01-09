@@ -117,7 +117,7 @@ module Trax
           )
         end
 
-        def self.type; :struct end;
+        def self.type; :anonymous_struct end;
 
         def to_serializable_hash
           _serializable_hash = to_hash
