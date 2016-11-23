@@ -32,6 +32,7 @@ module Trax
 
     autoload :AbstractMethods
     autoload :Blueprint
+
     autoload :Configuration
     autoload :Concern
     autoload :Definition
@@ -41,6 +42,7 @@ module Trax
     autoload :Errors
     autoload :Fields
     autoload :FS
+    autoload :HasCallbacks     
     autoload :HasMixins
     autoload :HasDependencies
     autoload :InheritanceHooks

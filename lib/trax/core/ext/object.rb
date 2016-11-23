@@ -6,6 +6,11 @@ module ObjectExtensions
     target.execute_call_strategy(*args, **options)
   end
 
+  def __smartsuper__(method_name, *args, **options)
+    target = method(method_name).super_method
+    target.execute_call_strategy(*args, **options)
+  end
+
   def as!(h)
     h.to_transformer.call(self)
   end

@@ -32,6 +32,10 @@ describe ::Object do
         configure_geometry do |config|
           config.sides = 0
         end
+
+        def do_something(some_arg)
+          some_arg
+        end
       end
 
       class Square < Shape
@@ -41,6 +45,9 @@ describe ::Object do
       end
 
       class Triangle < Shape
+        def do_something(*args)
+          __smartsuper__(:do_something, *args)
+        end
       end
     end
 
@@ -66,6 +73,13 @@ describe ::Object do
 
         it { expect(subject.geometry_configuration.sides).to eq 0 }
       end
+    end
+  end
+
+  describe "#__smartsuper__" do
+    subject { Triangle.new }
+    it "calls super with any number of arguments" do
+      expect(subject.do_something("one")).to eq "one"
     end
   end
 
