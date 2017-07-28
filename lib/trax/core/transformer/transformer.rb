@@ -51,7 +51,7 @@ module Trax
       end
 
       def initialize(obj={}, parent=nil)
-        @input = obj.dup
+        @input = obj.is_a?(::Hash) ? obj.dup : obj
         @output = {}.with_indifferent_access
         @parent = parent if parent
 
