@@ -4,7 +4,13 @@ module Trax
       include ::Trax::Core::CommonTransformerMethods
       attr_reader :input, :parent, :output
 
+      #if class does not have properties attributes it was an anonymous transformer created by a block,
+      #otherwise it was inherited from normally and we dont want to wipe out existing attributes
       def self.inherited(subklass)
+        apply_class_attributes_to_subklass(subklass) unless subklass.try(:properties)
+      end
+
+      def self.apply_class_attributes_to_subklass(subklass)
         subklass.class_attribute :properties
         subklass.properties = {}.with_indifferent_access
         subklass.class_attribute :after_initialize_callbacks
