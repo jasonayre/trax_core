@@ -4,13 +4,30 @@ module Trax
       include ::Trax::Core::CommonTransformerMethods
       attr_reader :input, :parent, :output
 
+      #if class does not have properties attributes it was an anonymous transformer created by a block,
+      #otherwise it was inherited from normally and we dont want to wipe out existing attributes
       def self.inherited(subklass)
+        if(subklass.try(:properties))
+          apply_duplicated_class_attributes_to_subklass(subklass)
+        else
+          apply_blank_class_attributes_to_subklass(subklass)
+        end
+      end
+
+      def self.apply_blank_class_attributes_to_subklass(subklass)
         subklass.class_attribute :properties
         subklass.properties = {}.with_indifferent_access
         subklass.class_attribute :after_initialize_callbacks
         subklass.after_initialize_callbacks = ::Set.new
         subklass.class_attribute :after_transform_callbacks
         subklass.after_transform_callbacks = ::Set.new
+      end
+
+      #need to dup the existing class attributes else they will be modified on original
+      def self.apply_duplicated_class_attributes_to_subklass(subklass)
+        subklass.properties = subklass.properties.dup
+        subklass.after_initialize_callbacks = subklass.after_initialize_callbacks.dup
+        subklass.after_transform_callbacks = subklass.after_transform_callbacks.dup
       end
 
       def self.after_initialize(&block)
@@ -51,7 +68,7 @@ module Trax
       end
 
       def initialize(obj={}, parent=nil)
-        @input = obj.dup
+        @input = obj.is_a?(::Hash) ? obj.dup : obj
         @output = {}.with_indifferent_access
         @parent = parent if parent
 

@@ -79,6 +79,14 @@ describe ::Trax::Core::Transformer do
         value + transformer.input["shipping"]["price"]
       end
     end
+
+    class SubclassedPayloadTransformer < PayloadTransformer
+      property "thingg", :default => lambda{|r| "word1" }
+    end
+
+    class OtherSubclassedPayloadTransformer < PayloadTransformer
+      property "thingg", :default => lambda{|r| "word2" }
+    end
   end
 
   subject {
@@ -91,6 +99,28 @@ describe ::Trax::Core::Transformer do
         expect(subject.class.properties['stats'].is_nested?).to eq true
       }
     end
+  end
+
+  context "inheritance" do
+    subject {
+      SubclassedPayloadTransformer.new(payload)
+    }
+
+    it {
+      expect(subject["something"]).to eq "anything"
+      expect(subject["thingg"]).to eq "word1"
+    }
+  end
+
+  context "inheritance" do
+    subject {
+      OtherSubclassedPayloadTransformer.new(payload)
+    }
+
+    it {
+      expect(subject["something"]).to eq "anything"
+      expect(subject["thingg"]).to eq "word2"
+    }
   end
 
   context "property mapping strategies" do
