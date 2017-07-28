@@ -81,6 +81,11 @@ describe ::Trax::Core::Transformer do
     end
 
     class SubclassedPayloadTransformer < PayloadTransformer
+      property "thingg", :default => lambda{|r| "word1" }
+    end
+
+    class OtherSubclassedPayloadTransformer < PayloadTransformer
+      property "thingg", :default => lambda{|r| "word2" }
     end
   end
 
@@ -103,6 +108,18 @@ describe ::Trax::Core::Transformer do
 
     it {
       expect(subject["something"]).to eq "anything"
+      expect(subject["thingg"]).to eq "word1"
+    }
+  end
+
+  context "inheritance" do
+    subject {
+      OtherSubclassedPayloadTransformer.new(payload)
+    }
+
+    it {
+      expect(subject["something"]).to eq "anything"
+      expect(subject["thingg"]).to eq "word2"
     }
   end
 
