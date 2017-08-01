@@ -27,6 +27,7 @@ module Defs
     integer :quantity_in_stock, :default => 0
     boolean :is_active, :default => false
     array :categories, :of => "Defs::Category", :default => []
+    set :departments, :attributes => { :choices => ['mens', 'womens'] }
   end
 
   struct :ShoesAttributes, :extends => "Defs::ProductAttributes" do

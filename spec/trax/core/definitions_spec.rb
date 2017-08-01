@@ -34,6 +34,13 @@ describe ::Trax::Core::Definitions do
         it { expect(subject::ProductAttributes.new(:categories => [ 2 ]).categories[0].to_s).to eq "clothing" }
       end
     end
+
+    context "set" do
+      it { expect(subject::ProductAttributes.new.departments.__getobj__).to be_a(::Set) }
+      context ".to_schema" do
+        it { expect(subject::ProductAttributes.fields.to_schema[:departments][:attributes][:choices]).to eq ["mens", "womens"] }
+      end
+    end
   end
 
   context "inheritance" do
