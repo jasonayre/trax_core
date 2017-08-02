@@ -28,6 +28,7 @@ module Trax
             :source => self.name,
             :type => self.type
           )
+          result[:attributes] = self.attributes if self.respond_to?(:attributes)
           result[:default] = self.default if self.respond_to?(:default)
           result
         end

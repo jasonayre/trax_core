@@ -22,17 +22,6 @@ module Trax
             self
           end
         end
-
-        def self.to_schema
-          result = ::Trax::Core::Definition.new(
-            :name => self.name.demodulize.underscore,
-            :source => self.name,
-            :type => self.type
-          )
-          result[:attributes] = self.attributes if self.respond_to?(:attributes)
-          result[:default] = self.default if self.respond_to?(:default)
-          result
-        end
       end
     end
   end
