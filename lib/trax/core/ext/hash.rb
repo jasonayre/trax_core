@@ -5,6 +5,12 @@ module HashExtensions
     self
   end
 
+  def stringify_values!
+    each_pair {|k,v| self[k] = v.to_s }
+    self
+  end
+
+
   ## Returns selected keys, named or renamed as specified
   # myproduct = {:name => "something", :price => "20"}
   # liability = myproduct.tap(&{:cost => :price}.to_transformer)
