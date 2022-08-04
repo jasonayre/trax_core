@@ -11,6 +11,10 @@ module Trax
           self.member_class = klass
         end
 
+        def self.is_enumerable?
+          true
+        end
+
         def self.of(klass)
           return ::Class.new(self) do
             include ::Trax::Core::Types::Behaviors::ArrayOfMembers

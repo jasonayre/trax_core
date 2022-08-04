@@ -22,6 +22,10 @@ module Trax
           :value
         end
 
+        def self.is_enumerable?
+          false
+        end
+
         def self.to_schema
           result = ::Trax::Core::Definition.new(
             :name => self.name.demodulize.underscore,

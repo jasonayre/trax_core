@@ -50,6 +50,10 @@ module Trax
         @strings ||= by_type(:string)
       end
 
+      def enumerables
+        @enumerables ||= all.select {|k,v| v.is_enumerable? }
+      end
+
       def to_schema
         schema = all.inject(::Hashie::Mash.new) do |result, (k,v)|
           case v.try(:type)

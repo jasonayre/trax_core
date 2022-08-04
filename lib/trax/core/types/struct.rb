@@ -118,6 +118,10 @@ module Trax
             _serializable_hash[attribute_name] = _serializable_hash[attribute_name].try(:to_i)
           end if self.class.fields_module.enums.keys.any?
 
+          self.class.fields_module.enumerables.keys.each do |attribute_name|
+            _serializable_hash[attribute_name] = _serializable_hash[attribute_name].to_a
+          end if self.class.fields_module.enumerables.any?
+
           _serializable_hash
         end
 
