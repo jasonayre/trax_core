@@ -88,7 +88,7 @@ module Trax
 
       def set_default_values
         self.class.configurable_options.select{|attr_name, hash| hash.key?(:default) }.each_pair do |attr_name, hash|
-          parent_context = self.class.parent_name.try(:constantize) if self.class.try(:parent_name)
+          parent_context = self.class.module_parent_name.try(:constantize) if self.class.try(:module_parent_name)
 
           default_value_for_option = if hash[:default].is_a?(Proc)
             hash[:default].arity > 0 ? self.instance_exec(parent_context, &hash[:default])
