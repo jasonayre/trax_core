@@ -51,7 +51,7 @@ module Trax
       end
 
       def enumerables
-        @enumerables ||= all.select {|k,v| v.is_enumerable? }
+        @enumerables ||= all.select {|k,v| v.try(:is_enumerable?) }
       end
 
       def to_schema
