@@ -21,7 +21,7 @@ module Trax
 
         def is_callable?
           return @is_callable if defined?(@is_callable)
-          @is_callable = try(:with) && try(:with).is_a?(Proc)
+          @is_callable = try(:_with) && try(:_with).is_a?(Proc)
         end
 
         def is_transformer?
@@ -54,7 +54,7 @@ module Trax
 
         def has_transformer_class?
           return @has_transformer_class if defined?(@has_transformer_class)
-          @has_transformer_class = try(:with) && !self.with.is_a?(Proc) && self.with.ancestors.include?(::Trax::Core::Transformer)
+          @has_transformer_class = try(:_with) && !self._with.is_a?(Proc) && self._with.ancestors.include?(::Trax::Core::Transformer)
         end
 
         def output_key

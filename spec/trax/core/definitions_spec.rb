@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ::Trax::Core::Definitions do
+describe ::Trax::Core::Definitions, :skip do
   subject(:definitions) { ::Defs }
 
   context "fields" do

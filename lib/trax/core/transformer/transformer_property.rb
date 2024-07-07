@@ -6,6 +6,7 @@ module Trax
       def initialize(transformer)
         @transformer = transformer
         set_value
+
         transform_value_with_block if self.class.is_callable?
         transform_value if self.class.has_transformer_class?
         set_default_value if set_default_value?
@@ -34,7 +35,19 @@ module Trax
       end
 
       def fetch_property_value
-        self.target.dig(*self.class.input_key_chain)
+        if self.class.from_parent?
+          fetch_property_value_from_parent
+        else
+          self.target.dig(*self.class.input_key_chain)
+        end
+      end
+
+      def fetch_property_value_from_parent
+        if self.class.from_parent == true
+          self.target.dig(self.class.property_name)
+        else
+          self.target.dig(*self.class.input_key_chain)
+        end
       end
 
       def set_value
@@ -62,12 +75,12 @@ module Trax
       end
 
       def transform_value_with_block
-        @value = self.class.with.arity > 1 ? self.class.with.call(@value, @transformer) : self.class.with.call(@value)
+        @value = self.class._with.arity > 1 ? self.class._with.call(@value, @transformer) : self.class._with.call(@value)
       end
 
       def transform_value
         @value = {} unless @value
-        @value = self.class.with.new(@value, @transformer)
+        @value = self.class._with.new(@value, @transformer)
       end
     end
   end

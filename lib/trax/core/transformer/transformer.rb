@@ -49,7 +49,7 @@ module Trax
       def self.property(_property_name, **options, &block)
         options[:parent_definition] = self
         options[:property_name] = _property_name
-        options[:with] ||= block if block_given?
+        options[:_with] = options[:with] || block if block_given?
         options[:from] = options[:property_name] unless options[:from]
         transformer_klass_name = "#{name}::#{_property_name.camelize}"
         transformer_klass = ::Trax::Core::NamedClass.new(transformer_klass_name, TransformerProperty, **options)
@@ -63,7 +63,7 @@ module Trax
         transformer_klass_name = "#{name}::#{_property_name.camelize}Transformer"
         transformer_klass = ::Trax::Core::NamedClass.new(transformer_klass_name, Transformer, **options, &block)
         property_options = {}.merge(options)
-        property_options[:with] = transformer_klass
+        property_options[:_with] = transformer_klass
         property(_property_name, **property_options)
       end
 
@@ -71,7 +71,6 @@ module Trax
         @input = obj.is_a?(::Hash) ? obj.dup : obj
         @output = {}.with_indifferent_access
         @parent = parent if parent
-
         initialize_output_properties
         run_after_initialize_callbacks if run_after_initialize_callbacks?
         run_after_transform_callbacks if run_after_transform_callbacks?
