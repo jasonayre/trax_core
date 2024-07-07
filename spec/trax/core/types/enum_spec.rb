@@ -12,7 +12,7 @@ describe ::Trax::Core::Types::Enum do
       end
 
       enum :Category do
-        define :default, 1, :display_name => "Default"
+        define :misc, 1, :display_name => "Misc"
         define :clothing, 2, :display_name => "Clothing"
         define :shoes, 3, :display_name => "Shoes"
         define :accessories, 4, :display_name => "Accessories", :deprecated => true
@@ -46,19 +46,19 @@ describe ::Trax::Core::Types::Enum do
       "::MyFakeEnumNamespace::Category".constantize
     end
 
-    let(:expected_names) {  [:default, :clothing, :shoes, :accessories] }
+    let(:expected_names) {  [:misc, :clothing, :shoes, :accessories] }
     let(:expected_values) { [1,2,3,4] }
 
     describe ".key?" do
-      it { expect(subject.key?(:default)).to eq true }
+      it { expect(subject.key?(:misc)).to eq true }
     end
 
     describe "[](val)" do
-      it { expect(subject[:default].to_i).to eq 1 }
+      it { expect(subject[:misc].to_i).to eq 1 }
     end
 
     describe "[](val)" do
-      it { expect(subject["default"].to_i).to eq 1 }
+      it { expect(subject["misc"].to_i).to eq 1 }
     end
 
     describe ".value?" do
@@ -66,7 +66,7 @@ describe ::Trax::Core::Types::Enum do
     end
 
     describe ".keys" do
-      it { expect(subject.keys).to eq [:default, :clothing, :shoes, :accessories] }
+      it { expect(subject.keys).to eq [:misc, :clothing, :shoes, :accessories] }
     end
 
     describe ".names" do
@@ -78,7 +78,7 @@ describe ::Trax::Core::Types::Enum do
     end
 
     context "duplicate enum name" do
-      it { expect{subject.define_enum_value(:default, 6)}.to raise_error(::Trax::Core::Errors::DuplicateEnumValue) }
+      it { expect{subject.define_enum_value(:misc, 6)}.to raise_error(::Trax::Core::Errors::DuplicateEnumValue) }
     end
 
     context "duplicate enum value" do
@@ -94,7 +94,7 @@ describe ::Trax::Core::Types::Enum do
       it { expect(subject.choice).to eq :clothing }
       it { expect(subject.choice).to eq 2 }
       it { expect(subject.next_value.to_sym).to eq :shoes }
-      it { expect(subject.previous_value.to_sym).to eq :default }
+      it { expect(subject.previous_value.to_sym).to eq :misc }
 
       context "selection of values" do
         it { expect(subject.select_next_value).to eq described_object.new(:shoes).choice }

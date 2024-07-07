@@ -134,6 +134,8 @@ module Trax
           :enum
         end
 
+        ###TODO: after updating hashie version this is now causing the following warning, need to figure out best way to deal with it:
+        #You are setting a key that conflicts with a built-in method Trax::Core::Definition#values defined in Hash. This can cause unexpected behavior when accessing the key as a property. You can still access the key via the #[] method.
         def self.to_schema
           result = ::Trax::Core::Definition.new(
             :name => self.name.demodulize.underscore,
